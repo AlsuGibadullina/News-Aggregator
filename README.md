@@ -1,4 +1,3 @@
-# News-Aggregator
 # News Aggregator with Infinispan
 
 This project is a centralized platform for aggregating news from multiple APIs. It provides users with a personalized news feed based on their preferences and trends.
