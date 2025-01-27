@@ -31,6 +31,17 @@
 	</properties>
 	<dependencies>
 		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>4.0.0-M1</version>
+		</dependency>
+		<!-- https://mavenlibs.com/maven/dependency/org.infinispan/infinispan-spring-boot-starter -->
+		<dependency>
+			<groupId>org.infinispan</groupId>
+			<artifactId>infinispan-spring-boot-starter</artifactId>
+			<version>2.3.6.Final</version>
+		</dependency>
+		<dependency>
 			<groupId>com.vladmihalcea</groupId>
 			<artifactId>hibernate-types-52</artifactId>
 			<version>2.14.0</version>
