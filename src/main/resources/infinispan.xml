@@ -1,0 +1,13 @@
+<infinispan>
+    <cache-container>
+        <local-cache name="newsApiCache">
+            <expiration interval="300000" lifespan="300000"/>
+        </local-cache>
+        <local-cache name="bingNewsCache">
+            <expiration interval="300000" lifespan="300000"/>
+        </local-cache>
+        <local-cache name="processedNewsCache">
+            <expiration interval="60000" lifespan="600000"/>
+        </local-cache>
+    </cache-container>
+</infinispan>
