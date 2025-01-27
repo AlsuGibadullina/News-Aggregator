@@ -15,18 +15,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers("/register", "/login", "/confirm").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/")
-                .and()
-                .logout()
-                .logoutSuccessUrl("/login")
-                .and()
-                .csrf().disable(); // Отключите CSRF для упрощения, но в продакшене это не рекомендуется
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/register", "/login", "/confirm").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/")
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login")
+                )
+                .csrf(csrf -> csrf.disable()); // Отключите CSRF для упрощения, но в продакшене это не рекомендуется
 
         return http.build();
     }
