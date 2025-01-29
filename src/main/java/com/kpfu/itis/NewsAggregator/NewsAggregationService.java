@@ -61,44 +61,46 @@ public class NewsAggregationService {
     /**
      * Сохранение новости и привязка её к темам.
      */
-    /**
-     * Сохранение новости и привязка её к темам.
-     */
+
     private void saveNewsWithTopics(ExternalNewsDto dto) {
         // Проверяем, существует ли новость уже (по URL)
         Optional<News> existingNewsOpt = newsRepository.findByUrl(dto.getUrl());
         News news;
+
         if (existingNewsOpt.isPresent()) {
+            // Новость существует, обновляем её поля
             news = existingNewsOpt.get();
-            // Обновляем необходимые поля
             news.setTitle(dto.getTitle());
             news.setContent(dto.getContent());
             news.setPublishedAt(dto.getPublishedAt());
-            // Можно обновить другие поля, если нужно
+            // Обновляем другие поля при необходимости
         } else {
-            // Создаём новую новость
+            // Создаём новую новость без установки ID
             news = new News();
-            news.setId(dto.getId());
             news.setTitle(dto.getTitle());
             news.setContent(dto.getContent());
             news.setSource(dto.getSourceName());
             news.setPublishedAt(dto.getPublishedAt());
-            news.setUrl(dto.getUrl()); // Убедитесь, что поле URL добавлено в сущность News
+            news.setUrl(dto.getUrl());
+            newsRepository.save(news);
         }
+        System.out.println(newsRepository.findByUrl(dto.getUrl()));
 
         // Определяем темы для новости
         List<Topic> topics = topicService.determineTopics(dto, stanfordCoreNLP);
 
-        // Привязываем темы к новости
-        news.getNewsTopics().clear(); // Очищаем текущие связи
+        // Очищаем существующие связи с темами (если обновляем)
+//        news.getNewsTopics().clear();
+
+        // Привязываем новые темы
         for (Topic topic : topics) {
             NewsTopic newsTopic = new NewsTopic();
             newsTopic.setNews(news);
             newsTopic.setTopic(topic);
-            news.getNewsTopics().add(newsTopic);
+//            news.getNewsTopics().add(newsTopic);
         }
 
-        // Сохраняем новость
+        // Сохраняем новость снова, чтобы сохранить связи с темами
         newsRepository.save(news);
     }
 

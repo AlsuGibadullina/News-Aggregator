@@ -2,12 +2,17 @@ package com.kpfu.itis.NewsAggregator.models.dtos;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 public class NewsFilterRequest {
 
     private List<String> sources; // список источников, например ["BBC", "CNN"]

@@ -97,14 +97,14 @@ public class NewsService {
             // (для оптимизации можно написать кастомный запрос,
             //  но для наглядности сделаем через stream)
             List<News> allNews = newsRepository.findAll();
-            List<News> filtered = allNews.stream()
-                    .filter(n -> n.getNewsTopics().stream()
-                            .map(NewsTopic::getTopic)
-                            .anyMatch(t -> topicIds.contains(t.getId()))
-                    )
-                    .collect(Collectors.toList());
+//            List<News> filtered = allNews.stream()
+//                    .filter(n -> n.getNewsTopics().stream()
+//                            .map(NewsTopic::getTopic)
+//                            .anyMatch(t -> topicIds.contains(t.getId()))
+//                    )
+//                    .collect(Collectors.toList());
 
-            return filtered.stream()
+            return allNews.stream()
                     .map(this::convertToDto)
                     .collect(Collectors.toList());
         }
@@ -124,10 +124,10 @@ public class NewsService {
         dto.setCommentsCount(news.getCommentsCount());
 
         // добавляем список названий тем
-        List<String> topicNames = news.getNewsTopics().stream()
-                .map(nt -> nt.getTopic().getName())
-                .collect(Collectors.toList());
-        dto.setTopics(topicNames);
+//        List<String> topicNames = news.getNewsTopics().stream()
+//                .map(nt -> nt.getTopic().getName())
+//                .collect(Collectors.toList());
+//        dto.setTopics(topicNames);
 
         return dto;
     }

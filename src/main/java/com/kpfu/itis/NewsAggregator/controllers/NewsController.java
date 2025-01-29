@@ -34,7 +34,7 @@ public class NewsController {
         return newsService.getPersonalizedNews(userId);
     }
 
-    @GetMapping("")
+    @GetMapping("/all")
     public List<NewsDto> getAll() {
         return newsService.get10LastNews();
     }

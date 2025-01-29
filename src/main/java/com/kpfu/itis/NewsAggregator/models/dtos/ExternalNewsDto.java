@@ -1,12 +1,12 @@
 package com.kpfu.itis.NewsAggregator.models.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 //Для унификации между всеми апишками
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExternalNewsDto {

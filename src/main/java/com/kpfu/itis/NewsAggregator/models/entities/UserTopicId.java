@@ -1,14 +1,14 @@
 package com.kpfu.itis.NewsAggregator.models.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserTopicId implements Serializable {

@@ -1,9 +1,7 @@
 package com.kpfu.itis.NewsAggregator.models.entities;
 
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,7 +11,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "user_topics")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserTopic {

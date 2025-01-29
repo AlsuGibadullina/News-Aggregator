@@ -1,9 +1,7 @@
 package com.kpfu.itis.NewsAggregator.models.entities;
 
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -16,7 +14,8 @@ import java.util.Map;
 
 @Entity
 @Table(name = "topics")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Topic {
@@ -27,9 +26,9 @@ public class Topic {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserTopic> userTopics = new ArrayList<>();
-
-    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<NewsTopic> newsTopics = new ArrayList<>();
+//    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<UserTopic> userTopics = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<NewsTopic> newsTopics = new ArrayList<>();
 }

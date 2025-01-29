@@ -1,6 +1,9 @@
 package com.kpfu.itis.NewsAggregator.models.dtos;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,7 +11,9 @@ import java.util.List;
 /**
  * DTO, представляющее новость для фронтенда/клиента
  */
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 public class NewsDto {
     private Long id;
     private String url;
