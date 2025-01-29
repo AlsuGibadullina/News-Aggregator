@@ -28,10 +28,10 @@ public class UserService {
 
         user.setEmail(email);
         user.setPasswordHash(passwordEncoder.encode(password));
-        user.setConfirmationCode(UUID.randomUUID().toString());
+//        user.setConfirmationCode(UUID.randomUUID().toString());
         userRepository.saveAndFlush(user);
 
-        sendConfirmationEmail(user.getEmail(), user.getConfirmationCode());
+//        sendConfirmationEmail(user.getEmail(), user.getConfirmationCode());
     }
 
     private void sendConfirmationEmail(String email, String confirmationCode) {
@@ -50,5 +50,11 @@ public class UserService {
                     return true;
                 })
                 .orElse(false);
+    }
+
+    public Optional<User> authenticateUser(String email, String password) {
+        System.out.println("Authenticating user with email: " + email);
+        return userRepository.findByEmail(email)
+                .filter(user -> passwordEncoder.matches(password, user.getPasswordHash()));
     }
 }
