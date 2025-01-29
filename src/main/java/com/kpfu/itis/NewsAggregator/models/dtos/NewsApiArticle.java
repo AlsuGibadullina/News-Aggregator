@@ -9,6 +9,7 @@ public class NewsApiArticle {
     private String title;
     private String description;
     private String url;
+    private Long id;
     private String publishedAt;
     private NewsApiSource source;
 }

@@ -34,7 +34,7 @@ public class TopicController {
     public String addTopicToUser(@PathVariable Long userId, @RequestBody TopicRequest request) {
         User user = userService.getUserById(userId);
         // получаем или создаем тему
-        Topic topic = topicService.getOrCreateTopic(request.getTopicName());
+        Topic topic = topicService.getByName(request.getTopicName()).get();
         // связываем
         topicService.addTopicToUser(topic, user);
         return "Topic " + topic.getName() + " added to user " + user.getEmail();
@@ -48,7 +48,7 @@ public class TopicController {
     public String removeTopicFromUser(@PathVariable Long userId, @RequestBody TopicRequest request) {
         User user = userService.getUserById(userId);
         // Получаем тему по имени (если нет, ничего не делаем)
-        Topic topic = topicService.getOrCreateTopic(request.getTopicName());
+        Topic topic = topicService.getByName(request.getTopicName()).get();
         topicService.removeTopicFromUser(topic, user);
         return "Topic " + topic.getName() + " removed from user " + user.getEmail();
     }

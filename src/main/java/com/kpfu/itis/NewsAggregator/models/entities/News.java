@@ -25,6 +25,9 @@ public class News {
     private Long id;
 
     @Column(nullable = false)
+    private String url;
+
+    @Column(nullable = false)
     private String title;
 
     @Column(columnDefinition = "TEXT")

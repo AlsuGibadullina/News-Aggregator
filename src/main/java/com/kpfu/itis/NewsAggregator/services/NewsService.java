@@ -30,6 +30,7 @@ public class NewsService {
 
     public List<NewsDto> get10LastNews() {
         List<News> allNews = newsRepository.findAll().subList(0, 10);
+        System.out.println(allNews);
         return allNews.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -115,6 +116,7 @@ public class NewsService {
     private NewsDto convertToDto(News news) {
         NewsDto dto = new NewsDto();
         dto.setId(news.getId());
+        dto.setUrl(news.getUrl());
         dto.setTitle(news.getTitle());
         dto.setContent(news.getContent());
         dto.setSource(news.getSource());

@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 public class NewsDto {
     private Long id;
+    private String url;
     private String title;
     private String content;
     private String source;

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
@@ -15,6 +16,8 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 
     // Или поиск по source
     List<News> findBySource(String source);
+
+    Optional<News> findByUrl(String url);
 
     // и т.д.
 }

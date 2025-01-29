@@ -75,7 +75,8 @@ public class NewsApiClient {
                 article.getDescription(),
                 article.getSource() != null ? article.getSource().getName() : "Unknown Source",
                 publishedDateTime,
-                article.getUrl()
+                article.getUrl(),
+                article.getId()
         );
     }
 
