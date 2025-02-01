@@ -1,0 +1,227 @@
+Index: src/main/java/com/kpfu/itis/NewsAggregator/controllers/NewsController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.kpfu.itis.NewsAggregator.controllers;\n\n\nimport com.kpfu.itis.NewsAggregator.models.dtos.NewsDto;\nimport com.kpfu.itis.NewsAggregator.models.dtos.NewsFilterRequest;\nimport com.kpfu.itis.NewsAggregator.services.NewsService;\nimport lombok.RequiredArgsConstructor;\nimport org.springframework.web.bind.annotation.*;\n\nimport java.util.List;\n\n@RestController\n@RequestMapping(\"/api/news\")\n@RequiredArgsConstructor\npublic class NewsController {\n\n    private final NewsService newsService;\n\n    /**\n     * Пример: POST /api/news/filter\n     * В body отправляем JSON с полями: sources, startDate, endDate\n     */\n    @PostMapping(\"/filter\")\n    public List<NewsDto> getNewsByFilter(@RequestBody NewsFilterRequest request) {\n        return newsService.getNewsByFilter(request);\n    }\n\n    /**\n     * Пример: GET /api/news/personalized?userId=123\n     * Возвращает персонализированные новости для пользователя\n     */\n    @GetMapping(\"/personalized\")\n    public List<NewsDto> getPersonalizedNews(@RequestParam Long userId) {\n        return newsService.getPersonalizedNews(userId);\n    }\n\n    @GetMapping(\"/all\")\n    public List<NewsDto> getAll() {\n        return newsService.get10LastNews();\n    }\n}\n
+===================================================================
+diff --git a/src/main/java/com/kpfu/itis/NewsAggregator/controllers/NewsController.java b/src/main/java/com/kpfu/itis/NewsAggregator/controllers/NewsController.java
+--- a/src/main/java/com/kpfu/itis/NewsAggregator/controllers/NewsController.java	
++++ b/src/main/java/com/kpfu/itis/NewsAggregator/controllers/NewsController.java	
+@@ -3,11 +3,14 @@
+ 
+ import com.kpfu.itis.NewsAggregator.models.dtos.NewsDto;
+ import com.kpfu.itis.NewsAggregator.models.dtos.NewsFilterRequest;
++import com.kpfu.itis.NewsAggregator.models.entities.News;
+ import com.kpfu.itis.NewsAggregator.services.NewsService;
+ import lombok.RequiredArgsConstructor;
+ import org.springframework.web.bind.annotation.*;
+ 
++import java.util.Collections;
+ import java.util.List;
++import java.util.stream.Collectors;
+ 
+ @RestController
+ @RequestMapping("/api/news")
+@@ -20,10 +23,10 @@
+      * Пример: POST /api/news/filter
+      * В body отправляем JSON с полями: sources, startDate, endDate
+      */
+-    @PostMapping("/filter")
+-    public List<NewsDto> getNewsByFilter(@RequestBody NewsFilterRequest request) {
+-        return newsService.getNewsByFilter(request);
+-    }
++//    @PostMapping("/filter")
++//    public List<NewsDto> getNewsByFilter(@RequestBody NewsFilterRequest request) {
++//        return newsService.getNewsByFilter(request);
++//    }
+ 
+     /**
+      * Пример: GET /api/news/personalized?userId=123
+@@ -35,7 +38,36 @@
+     }
+ 
+     @GetMapping("/all")
+-    public List<NewsDto> getAll() {
+-        return newsService.get10LastNews();
++    public List<NewsDto> getAll(@RequestParam(name = "page", defaultValue = "0") int page,
++                                @RequestParam(name = "size", defaultValue = "15") int size) {
++        return newsService.getAll();
++    }
++    @GetMapping("/all-paged")
++    public List<NewsDto> getAllPaged(
++            @RequestParam(name = "page", defaultValue = "0") int page,
++            @RequestParam(name = "size", defaultValue = "15") int size
++    ) {
++        // Опять же, упрощённо:
++        List<NewsDto> allNews = newsService.getAll();
++        return allNews;
+     }
++
++    /**
++     * Эндпоинт для получения новостей по топику с пагинацией.
++     * Пример запроса: GET /api/news/by-topic?topic=Sports&page=0&size=15
++     */
++    @GetMapping("/by-topic")
++    public List<NewsDto> getNewsByTopic(
++            @RequestParam("topic") String topicName,
++            @RequestParam(name = "page", defaultValue = "0") int page,
++            @RequestParam(name = "size", defaultValue = "15") int size) {
++        return newsService.getNewsByTopic(topicName, page, size);
++    }
++    @GetMapping("/{id}")
++    public NewsDto getNewsById(@PathVariable("id") Long id) {
++        News news = newsService.getById(id);
++        return newsService.convertToDto(news);
++    }
++
++
+ }
+Index: src/main/java/com/kpfu/itis/NewsAggregator/services/NewsService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.kpfu.itis.NewsAggregator.services;\n\nimport com.kpfu.itis.NewsAggregator.models.dtos.NewsDto;\nimport com.kpfu.itis.NewsAggregator.models.dtos.NewsFilterRequest;\nimport com.kpfu.itis.NewsAggregator.models.entities.News;\nimport com.kpfu.itis.NewsAggregator.models.entities.Topic;\nimport com.kpfu.itis.NewsAggregator.models.entities.NewsTopic;\nimport com.kpfu.itis.NewsAggregator.models.entities.User;\nimport com.kpfu.itis.NewsAggregator.repositories.NewsRepository;\nimport lombok.RequiredArgsConstructor;\nimport org.springframework.stereotype.Service;\n\nimport java.time.LocalDateTime;\nimport java.time.LocalTime;\nimport java.util.*;\nimport java.util.stream.Collectors;\n\n@Service\n@RequiredArgsConstructor\npublic class NewsService {\n\n    private final NewsRepository newsRepository;\n    private final TopicService topicService; // см. ниже\n    private final UserService userService;   // см. ниже\n\n    /**\n     * Получить все новости с учётом базовых критериев (источник, даты и т.д.)\n     * Можно расширять и изменять по необходимости\n     */\n\n    public List<NewsDto> get10LastNews() {\n        List<News> allNews = newsRepository.findAll().subList(0, 10);\n        System.out.println(allNews);\n        return allNews.stream()\n                .map(this::convertToDto)\n                .collect(Collectors.toList());\n    }\n    public List<NewsDto> getNewsByFilter(NewsFilterRequest filterRequest) {\n        // 1) Достаём все новости (неэффективно, если их много).\n        //    Лучше делать кастомный метод в репозитории, если критериев много.\n        List<News> allNews = newsRepository.findAll();\n\n        // 2) Фильтруем по источникам (если указаны)\n        if (filterRequest.getSources() != null && !filterRequest.getSources().isEmpty()) {\n            allNews = allNews.stream()\n                    .filter(news -> filterRequest.getSources().contains(news.getSource()))\n                    .collect(Collectors.toList());\n        }\n\n        // 3) Фильтр по датам\n        if (filterRequest.getStartDate() != null) {\n            LocalDateTime startDateTime = filterRequest.getStartDate().atStartOfDay();\n            allNews = allNews.stream()\n                    .filter(news -> news.getPublishedAt() != null && news.getPublishedAt().isAfter(startDateTime))\n                    .collect(Collectors.toList());\n        }\n        if (filterRequest.getEndDate() != null) {\n            // берем конец дня, если нужно включить всю дату\n            LocalDateTime endDateTime = filterRequest.getEndDate().atTime(LocalTime.MAX);\n            allNews = allNews.stream()\n                    .filter(news -> news.getPublishedAt() != null && news.getPublishedAt().isBefore(endDateTime))\n                    .collect(Collectors.toList());\n        }\n\n        // 4) Тут можно добавить фильтр по региону, если он у вас где-то хранится.\n\n        // 5) Преобразуем в DTO\n        return allNews.stream()\n                .map(this::convertToDto)\n                .collect(Collectors.toList());\n    }\n\n    /**\n     * Получить \"персонализированную\" ленту новостей для пользователя\n     * То есть, с учётом тем (Topic), которые пользователь выбрал.\n     */\n    public List<NewsDto> getPersonalizedNews(Long userId) {\n        // находим пользователя\n        User user = userService.getUserById(userId);\n\n        // получаем список тем, на которые подписан пользователь\n        List<Topic> userTopics = user.getUserTopics().stream()\n                .map(ut -> ut.getTopic())\n                .collect(Collectors.toList());\n\n        if (userTopics.isEmpty()) {\n            // Если пользователь не выбрал никаких тем — вернём все новости\n            // Или вернём пустой список — зависит от бизнес-логики\n            return newsRepository.findAll().stream()\n                    .map(this::convertToDto)\n                    .collect(Collectors.toList());\n        } else {\n            // Получаем id тем\n            Set<Long> topicIds = userTopics.stream().map(Topic::getId).collect(Collectors.toSet());\n\n            // Фильтруем новости, которые связаны с этими темами\n            // (для оптимизации можно написать кастомный запрос,\n            //  но для наглядности сделаем через stream)\n            List<News> allNews = newsRepository.findAll();\n//            List<News> filtered = allNews.stream()\n//                    .filter(n -> n.getNewsTopics().stream()\n//                            .map(NewsTopic::getTopic)\n//                            .anyMatch(t -> topicIds.contains(t.getId()))\n//                    )\n//                    .collect(Collectors.toList());\n\n            return allNews.stream()\n                    .map(this::convertToDto)\n                    .collect(Collectors.toList());\n        }\n    }\n\n    /**\n     * Вспомогательный метод конвертации сущности в DTO\n     */\n    private NewsDto convertToDto(News news) {\n        NewsDto dto = new NewsDto();\n        dto.setId(news.getId());\n        dto.setUrl(news.getUrl());\n        dto.setTitle(news.getTitle());\n        dto.setContent(news.getContent());\n        dto.setSource(news.getSource());\n        dto.setPublishedAt(news.getPublishedAt());\n        dto.setCommentsCount(news.getCommentsCount());\n\n        // добавляем список названий тем\n//        List<String> topicNames = news.getNewsTopics().stream()\n//                .map(nt -> nt.getTopic().getName())\n//                .collect(Collectors.toList());\n//        dto.setTopics(topicNames);\n\n        return dto;\n    }\n}\n
+===================================================================
+diff --git a/src/main/java/com/kpfu/itis/NewsAggregator/services/NewsService.java b/src/main/java/com/kpfu/itis/NewsAggregator/services/NewsService.java
+--- a/src/main/java/com/kpfu/itis/NewsAggregator/services/NewsService.java	
++++ b/src/main/java/com/kpfu/itis/NewsAggregator/services/NewsService.java	
+@@ -4,9 +4,16 @@
+ import com.kpfu.itis.NewsAggregator.models.dtos.NewsFilterRequest;
+ import com.kpfu.itis.NewsAggregator.models.entities.News;
+ import com.kpfu.itis.NewsAggregator.models.entities.Topic;
++import org.springframework.data.domain.Page;
++import org.springframework.data.domain.PageRequest;
++import org.springframework.data.domain.Pageable;
++import org.springframework.data.jpa.repository.JpaRepository;
++import org.springframework.data.jpa.repository.Query;
++import org.springframework.data.repository.query.Param;
+ import com.kpfu.itis.NewsAggregator.models.entities.NewsTopic;
+ import com.kpfu.itis.NewsAggregator.models.entities.User;
+ import com.kpfu.itis.NewsAggregator.repositories.NewsRepository;
++import com.kpfu.itis.NewsAggregator.repositories.NewsTopicRepository;
+ import lombok.RequiredArgsConstructor;
+ import org.springframework.stereotype.Service;
+ 
+@@ -20,6 +27,7 @@
+ public class NewsService {
+ 
+     private final NewsRepository newsRepository;
++    private final NewsTopicRepository newsTopicRepository;
+     private final TopicService topicService; // см. ниже
+     private final UserService userService;   // см. ниже
+ 
+@@ -28,48 +36,69 @@
+      * Можно расширять и изменять по необходимости
+      */
+ 
+-    public List<NewsDto> get10LastNews() {
+-        List<News> allNews = newsRepository.findAll().subList(0, 10);
+-        System.out.println(allNews);
++    public List<NewsDto> getAll() {
++        List<News> allNews = newsRepository.findAll();
+         return allNews.stream()
+                 .map(this::convertToDto)
+                 .collect(Collectors.toList());
+     }
+-    public List<NewsDto> getNewsByFilter(NewsFilterRequest filterRequest) {
+-        // 1) Достаём все новости (неэффективно, если их много).
+-        //    Лучше делать кастомный метод в репозитории, если критериев много.
+-        List<News> allNews = newsRepository.findAll();
+-
+-        // 2) Фильтруем по источникам (если указаны)
+-        if (filterRequest.getSources() != null && !filterRequest.getSources().isEmpty()) {
+-            allNews = allNews.stream()
+-                    .filter(news -> filterRequest.getSources().contains(news.getSource()))
+-                    .collect(Collectors.toList());
+-        }
+-
+-        // 3) Фильтр по датам
+-        if (filterRequest.getStartDate() != null) {
+-            LocalDateTime startDateTime = filterRequest.getStartDate().atStartOfDay();
+-            allNews = allNews.stream()
+-                    .filter(news -> news.getPublishedAt() != null && news.getPublishedAt().isAfter(startDateTime))
+-                    .collect(Collectors.toList());
+-        }
+-        if (filterRequest.getEndDate() != null) {
+-            // берем конец дня, если нужно включить всю дату
+-            LocalDateTime endDateTime = filterRequest.getEndDate().atTime(LocalTime.MAX);
+-            allNews = allNews.stream()
+-                    .filter(news -> news.getPublishedAt() != null && news.getPublishedAt().isBefore(endDateTime))
+-                    .collect(Collectors.toList());
+-        }
+ 
+-        // 4) Тут можно добавить фильтр по региону, если он у вас где-то хранится.
++    public News getById(Long id) {
++        News news = newsRepository.findById(id).get();
++        return news;
++    }
+ 
+-        // 5) Преобразуем в DTO
+-        return allNews.stream()
++    /**
++     * Получить новости по топику с поддержкой пагинации.
++     * @param topicName название топика (например, "Sports", "Politics")
++     * @param page номер страницы (начиная с 0)
++     * @param size количество новостей на странице (например, 15)
++     * @return список NewsDto для заданного топика
++     */
++    public List<NewsDto> getNewsByTopic(String topicName, int page, int size) {
++        Pageable pageable = PageRequest.of(page, size);
++        // Получаем новости через запрос в таблицу news_topics
++        Page<News> newsPage = newsTopicRepository.findNewsByTopicName(topicName, pageable);
++        return newsPage.stream()
+                 .map(this::convertToDto)
+                 .collect(Collectors.toList());
+     }
+ 
++//    public List<NewsDto> getNewsByFilter(NewsFilterRequest filterRequest) {
++//        // 1) Достаём все новости (неэффективно, если их много).
++//        //    Лучше делать кастомный метод в репозитории, если критериев много.
++//        List<News> allNews = newsRepository.findAll();
++//
++//        // 2) Фильтруем по источникам (если указаны)
++//        if (filterRequest.getSources() != null && !filterRequest.getSources().isEmpty()) {
++//            allNews = allNews.stream()
++//                    .filter(news -> filterRequest.getSources().contains(news.getSource()))
++//                    .collect(Collectors.toList());
++//        }
++//
++//        // 3) Фильтр по датам
++//        if (filterRequest.getStartDate() != null) {
++//            LocalDateTime startDateTime = filterRequest.getStartDate().atStartOfDay();
++//            allNews = allNews.stream()
++//                    .filter(news -> news.getPublishedAt() != null && news.getPublishedAt().isAfter(startDateTime))
++//                    .collect(Collectors.toList());
++//        }
++//        if (filterRequest.getEndDate() != null) {
++//            // берем конец дня, если нужно включить всю дату
++//            LocalDateTime endDateTime = filterRequest.getEndDate().atTime(LocalTime.MAX);
++//            allNews = allNews.stream()
++//                    .filter(news -> news.getPublishedAt() != null && news.getPublishedAt().isBefore(endDateTime))
++//                    .collect(Collectors.toList());
++//        }
++//
++//        // 4) Тут можно добавить фильтр по региону, если он у вас где-то хранится.
++//
++//        // 5) Преобразуем в DTO
++//        return allNews.stream()
++//                .map(this::convertToDto)
++//                .collect(Collectors.toList());
++//    }
++
+     /**
+      * Получить "персонализированную" ленту новостей для пользователя
+      * То есть, с учётом тем (Topic), которые пользователь выбрал.
+@@ -113,7 +142,7 @@
+     /**
+      * Вспомогательный метод конвертации сущности в DTO
+      */
+-    private NewsDto convertToDto(News news) {
++    public NewsDto convertToDto(News news) {
+         NewsDto dto = new NewsDto();
+         dto.setId(news.getId());
+         dto.setUrl(news.getUrl());
+@@ -131,4 +160,5 @@
+ 
+         return dto;
+     }
++
+ }

@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="1ebcf558-65cf-4cfb-b65e-5a136a70948d" name="Changes" comment="WebClient fix">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/repositories/NewsTopicRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/news_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/MainPageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/MainPageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/auth/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/controllers/NewsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/controllers/NewsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/NewsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/NewsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="HTML File" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="dev" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2sDlu6qDyD843pQG4oAxo1HiIOf" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/news__fetch&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.NewsAggregatorApplication">
+    <configuration name="NewsAggregatorApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.kpfu.itis.NewsAggregator.NewsAggregatorApplication" />
+      <module name="NewsAggregator" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.kpfu.itis.NewsAggregator.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="lombok-1.18.36.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar!/" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="News-Aggregator" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="News-Aggregator" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.NewsAggregatorApplication" />
+      <item itemvalue="JAR Application.lombok-1.18.36.jar" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.NewsAggregatorApplication" />
+        <item itemvalue="JAR Application.lombok-1.18.36.jar" />
+        <item itemvalue="JAR Application.lombok-1.18.36.jar" />
+        <item itemvalue="Application.NewsAggregatorApplication" />
+        <item itemvalue="Application.NewsAggregatorApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1ebcf558-65cf-4cfb-b65e-5a136a70948d" name="Changes" comment="" />
+      <created>1737998246957</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1737998246957</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Project initialization">
+      <option name="closed" value="true" />
+      <created>1737999543507</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1737999543508</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Basic web appllication">
+      <option name="closed" value="true" />
+      <created>1738000600961</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1738000600961</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Fixes">
+      <option name="closed" value="true" />
+      <created>1738001468776</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1738001468776</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Fixes">
+      <option name="closed" value="true" />
+      <created>1738001597767</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1738001597767</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Entities">
+      <option name="closed" value="true" />
+      <created>1738004365044</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1738004365044</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Updated pom">
+      <option name="closed" value="true" />
+      <created>1738009648246</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1738009648246</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Updated pom">
+      <option name="closed" value="true" />
+      <created>1738010449416</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1738010449416</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Updated pom">
+      <option name="closed" value="true" />
+      <created>1738012050229</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1738012050229</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Updated application.properties">
+      <option name="closed" value="true" />
+      <created>1738014902258</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1738014902258</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Moved from javax to jakarta">
+      <option name="closed" value="true" />
+      <created>1738014965627</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1738014965627</updated>
+    </task>
+    <task id="LOCAL-00011" summary="NewsAPI fetching services + JPA">
+      <option name="closed" value="true" />
+      <created>1738015010359</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1738015010359</updated>
+    </task>
+    <task id="LOCAL-00012" summary="NewsAggregationScheduler">
+      <option name="closed" value="true" />
+      <created>1738015027031</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1738015027031</updated>
+    </task>
+    <task id="LOCAL-00013" summary="WebClientConfig">
+      <option name="closed" value="true" />
+      <created>1738015042300</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1738015042300</updated>
+    </task>
+    <task id="LOCAL-00014" summary="WebClient">
+      <option name="closed" value="true" />
+      <created>1738177914469</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1738177914470</updated>
+    </task>
+    <task id="LOCAL-00015" summary="WebClient fix">
+      <option name="closed" value="true" />
+      <created>1738183321367</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1738183321368</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Project initialization" />
+    <MESSAGE value="Basic web appllication" />
+    <MESSAGE value="Fixes" />
+    <MESSAGE value="Entities" />
+    <MESSAGE value="Updated pom" />
+    <MESSAGE value="Updated application.properties" />
+    <MESSAGE value="Fixed entities" />
+    <MESSAGE value="Moved from javax to jakarta" />
+    <MESSAGE value="NewsAPI fetching services + JPA" />
+    <MESSAGE value="NewsAggregationScheduler" />
+    <MESSAGE value="WebClientConfig" />
+    <MESSAGE value="WebClient" />
+    <MESSAGE value="WebClient fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="WebClient fix" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

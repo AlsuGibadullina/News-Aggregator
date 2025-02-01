@@ -1,0 +1,469 @@
+Index: src/main/java/com/kpfu/itis/NewsAggregator/repositories/NewsTopicRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/kpfu/itis/NewsAggregator/repositories/NewsTopicRepository.java b/src/main/java/com/kpfu/itis/NewsAggregator/repositories/NewsTopicRepository.java
+new file mode 100644
+--- /dev/null	
++++ b/src/main/java/com/kpfu/itis/NewsAggregator/repositories/NewsTopicRepository.java	
+@@ -0,0 +1,17 @@
++package com.kpfu.itis.NewsAggregator.repositories;
++
++
++import com.kpfu.itis.NewsAggregator.models.entities.News;
++import com.kpfu.itis.NewsAggregator.models.entities.NewsTopic;
++import com.kpfu.itis.NewsAggregator.models.entities.NewsTopicId;
++import org.springframework.data.domain.Page;
++import org.springframework.data.domain.Pageable;
++import org.springframework.data.jpa.repository.JpaRepository;
++import org.springframework.data.jpa.repository.Query;
++import org.springframework.data.repository.query.Param;
++
++public interface NewsTopicRepository extends JpaRepository<NewsTopic, NewsTopicId> {
++
++    @Query("select nt.news from NewsTopic nt where nt.topic.name = :topicName order by nt.news.publishedAt desc")
++    Page<News> findNewsByTopicName(@Param("topicName") String topicName, Pageable pageable);
++}
+Index: src/main/resources/templates/detail.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/detail.html b/src/main/resources/templates/detail.html
+new file mode 100644
+--- /dev/null	
++++ b/src/main/resources/templates/detail.html	
+@@ -0,0 +1,119 @@
++<!DOCTYPE html>
++<html lang="ru">
++<head>
++  <meta charset="UTF-8" />
++  <title>Детальная информация о новости</title>
++  <style>
++    /* Стили, как в предыдущем примере */
++    body {
++      background-color: #f9f9f9;
++      margin: 0;
++      padding: 20px;
++      font-family: Arial, sans-serif;
++      color: #333;
++    }
++    .container {
++      max-width: 800px;
++      margin: 0 auto;
++    }
++    h1 {
++      margin-bottom: 20px;
++    }
++    .news-detail {
++      background: #fff;
++      padding: 20px;
++      border-radius: 6px;
++      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
++    }
++    .news-detail .news-header {
++      display: flex;
++      justify-content: space-between;
++      align-items: center;
++      margin-bottom: 15px;
++    }
++    .news-detail .source {
++      font-weight: bold;
++      font-size: 16px;
++      color: #555;
++    }
++    .news-detail .date {
++      font-size: 14px;
++      color: #888;
++    }
++    .news-detail .title {
++      font-size: 24px;
++      font-weight: bold;
++      margin-bottom: 15px;
++    }
++    .news-detail .content {
++      font-size: 16px;
++      line-height: 1.6;
++    }
++    .back-btn {
++      display: inline-block;
++      margin-top: 20px;
++      background-color: #007bff;
++      color: #fff;
++      text-decoration: none;
++      padding: 10px 20px;
++      border-radius: 4px;
++      transition: background-color 0.2s ease;
++    }
++    .back-btn:hover {
++      background-color: #0056b3;
++    }
++  </style>
++</head>
++<body>
++<div class="container">
++  <h1>Детальная страница новости</h1>
++  <div class="news-detail" id="newsDetail">
++    <!-- Данные новости будут подставлены через JavaScript -->
++  </div>
++  <a href="news_page.html" class="back-btn">Вернуться к ленте</a>
++</div>
++<script>
++  document.addEventListener('DOMContentLoaded', () => {
++    const params = new URLSearchParams(window.location.search);
++    const newsId = params.get('id');
++
++    if (!newsId) {
++      alert('Нет ID новости!');
++      window.location.href = 'index.html';
++      return;
++    }
++
++    fetch(`/api/news/${newsId}`)
++      .then(response => {
++        if (!response.ok) {
++          throw new Error('Ошибка при получении новости: ' + response.status);
++        }
++        return response.json();
++      })
++      .then(news => {
++        // Обновляем заголовок документа (тег <title>) заголовком новости
++        document.title = news.title;
++
++        const newsDetailEl = document.getElementById('newsDetail');
++        const dateStr = news.publishedAt ? new Date(news.publishedAt).toLocaleString() : 'Без даты';
++        const source = news.source || 'Неизвестный источник';
++        const title = news.title || 'Без заголовка';
++        const content = news.content || 'Нет содержимого';
++
++        newsDetailEl.innerHTML = `
++          <div class="news-header">
++            <div class="source">${source}</div>
++            <div class="date">${dateStr}</div>
++          </div>
++          <div class="title">${title}</div>
++          <div class="content">${content}</div>
++        `;
++      })
++      .catch(err => {
++        console.error(err);
++        alert('Не удалось загрузить детальную информацию о новости');
++      });
++  });
++</script>
++</body>
++</html>
+Index: src/main/resources/templates/news_page.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/news_page.html b/src/main/resources/templates/news_page.html
+new file mode 100644
+--- /dev/null	
++++ b/src/main/resources/templates/news_page.html	
+@@ -0,0 +1,264 @@
++<!DOCTYPE html>
++<html lang="ru">
++<head>
++    <meta charset="UTF-8" />
++    <title>Лента</title>
++    <style>
++        /* ============ Общий Reset/Box-sizing ============ */
++        * {
++          margin: 0;
++          padding: 0;
++          box-sizing: border-box;
++          font-family: sans-serif;
++        }
++
++        body {
++          background: #f3f3f3;
++          color: #333;
++          padding: 20px;
++        }
++
++        /* ============ Шапка и контейнеры ============ */
++        .header {
++          display: flex;
++          align-items: center;
++          justify-content: space-between;
++          margin-bottom: 20px;
++        }
++
++        .header h1 {
++          font-size: 24px;
++        }
++
++        .topics-container {
++          display: flex;
++          flex-wrap: wrap;
++          gap: 10px;
++          margin-bottom: 20px;
++        }
++
++        .topic-btn {
++          background-color: #ddd;
++          border: none;
++          border-radius: 4px;
++          padding: 8px 14px;
++          font-size: 14px;
++          cursor: pointer;
++          transition: background-color 0.2s ease;
++        }
++
++        .topic-btn:hover {
++          background-color: #ccc;
++        }
++
++        .topic-btn.active {
++          background-color: #bbb;
++          font-weight: bold;
++        }
++
++        /* ============ Список новостей ============ */
++        .news-list {
++          display: flex;
++          flex-direction: column;
++          gap: 10px;
++          margin-bottom: 20px;
++        }
++
++        .news-card {
++          background: #fff;
++          border-radius: 6px;
++          padding: 15px;
++          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
++          cursor: pointer;
++          transition: box-shadow 0.2s ease;
++        }
++
++        .news-card:hover {
++          box-shadow: 0 2px 7px rgba(0,0,0,0.15);
++        }
++
++        .news-card .news-header {
++          display: flex;
++          justify-content: space-between;
++          margin-bottom: 5px;
++        }
++
++        .news-card .news-header .source {
++          font-weight: bold;
++          color: #555;
++        }
++
++        .news-card .news-header .date {
++          font-size: 14px;
++          color: #888;
++        }
++
++        .news-card .title {
++          font-size: 16px;
++          font-weight: bold;
++          margin-bottom: 8px;
++        }
++
++        /* ============ Кнопка "Показать ещё" ============ */
++        .load-more {
++          background-color: #007bff;
++          color: #fff;
++          border: none;
++          padding: 12px 20px;
++          border-radius: 4px;
++          cursor: pointer;
++          font-size: 16px;
++          transition: background-color 0.2s ease;
++        }
++
++        .load-more:hover {
++          background-color: #0056b3;
++        }
++    </style>
++</head>
++<body>
++<header class="header">
++    <h1>Новостная лента</h1>
++</header>
++
++<!-- Блок с кнопками топиков -->
++<div class="topics-container">
++    <!-- Кнопка "Все новости" -->
++    <button class="topic-btn active" data-topic="all">Все новости</button>
++    <!-- Пример топиков; можно дописать свои -->
++    <button class="topic-btn" data-topic="Sports">Sports</button>
++    <button class="topic-btn" data-topic="Politics">Politics</button>
++    <button class="topic-btn" data-topic="Technology">Technology</button>
++    <button class="topic-btn" data-topic="Health">Health</button>
++    <button class="topic-btn" data-topic="Business">Business</button>
++    <button class="topic-btn" data-topic="Entertainment">Entertainment</button>
++    <button class="topic-btn" data-topic="Science">Science</button>
++    <button class="topic-btn" data-topic="Environment">Environment</button>
++    <button class="topic-btn" data-topic="Education">Education</button>
++    <button class="topic-btn" data-topic="Travel">Travel</button>
++</div>
++
++<!-- Список новостей -->
++<div class="news-list" id="newsList">
++    <!-- Карточки новостей будут добавляться динамически через JS -->
++</div>
++
++<!-- Кнопка "Показать ещё" -->
++<button class="load-more" id="loadMoreBtn">Показать ещё</button>
++
++<!-- Скрипт -->
++<script>
++    // Текущее состояние:
++    let currentTopic = 'all'; // "all" означает "все новости"
++    let currentPage = 0;      // Стартовая страница
++    const pageSize = 15;      // Кол-во новостей на одной "странице"
++
++    // Ссылки на элементы
++    const topicsButtons = document.querySelectorAll('.topic-btn');
++    const newsList = document.getElementById('newsList');
++    const loadMoreBtn = document.getElementById('loadMoreBtn');
++
++    // При загрузке страницы:
++    document.addEventListener('DOMContentLoaded', () => {
++      // Сразу загрузим новости (all)
++      loadNews('all', 0);
++
++      // Повесим обработчики на все кнопки топиков
++      topicsButtons.forEach(btn => {
++        btn.addEventListener('click', () => {
++          // Удаляем класс active у всех
++          topicsButtons.forEach(b => b.classList.remove('active'));
++          // Добавляем active на кликнутую
++          btn.classList.add('active');
++
++          // Берём topic
++          const topic = btn.getAttribute('data-topic');
++          // Сбрасываем страницу на 0
++          currentPage = 0;
++          // Очищаем ленту
++          newsList.innerHTML = '';
++          // Загружаем новости
++          loadNews(topic, currentPage);
++
++          // Запомним текущий топик
++          currentTopic = topic;
++        });
++      });
++
++      // Клик на кнопку "Показать ещё"
++      loadMoreBtn.addEventListener('click', () => {
++        currentPage++;
++        loadNews(currentTopic, currentPage);
++      });
++    });
++
++    /**
++     * Загружаем список новостей для указанного топика и страницы.
++     * Если topic == 'all', берём /api/news/all-paged
++     * Иначе — /api/news/by-topic
++     */
++    function loadNews(topic, page) {
++      let url = '';
++      if (topic === 'all') {
++        url = `/api/news/all-paged?page=${page}&size=${pageSize}`;
++      } else {
++        url = `/api/news/by-topic?topic=${topic}&page=${page}&size=${pageSize}`;
++      }
++
++      fetch(url)
++        .then(response => {
++          if (!response.ok) {
++            throw new Error('Ошибка при загрузке данных: ' + response.status);
++          }
++          return response.json();
++        })
++        .then(data => {
++          // data — это массив NewsDto
++          // console.log('Загруженные новости:', data);
++
++          // Если data пустой, то на этой странице новостей больше нет
++          if (!data || data.length === 0) {
++            // Можно спрятать кнопку "Показать ещё"
++            loadMoreBtn.style.display = 'none';
++            return;
++          }
++
++          // Если мы успешно получили данные, показываем кнопку "Показать ещё"
++          loadMoreBtn.style.display = 'inline-block';
++
++          // Рендерим каждый элемент
++          data.forEach(news => {
++            // Создаём карточку
++            const card = document.createElement('div');
++            card.className = 'news-card';
++
++            // Вставляем разметку
++            // news.source, news.publishedAt, news.title
++            const dateStr = news.publishedAt ? new Date(news.publishedAt).toLocaleString() : 'Без даты';
++            const source = news.source ? news.source : 'Неизвестный источник';
++            const title = news.title ? news.title : 'Без заголовка';
++
++            card.innerHTML = `
++              <div class="news-header">
++                <div class="source">${source}</div>
++                <div class="date">${dateStr}</div>
++              </div>
++              <div class="title">${title}</div>
++            `;
++
++            // При клике на карточку — переходим на detail.html?id={news.id}
++            card.addEventListener('click', () => {
++              window.location.href = `detail.html?id=${news.id}`;
++            });
++
++            // Добавляем карточку в контейнер
++            newsList.appendChild(card);
++          });
++        })
++        .catch(err => {
++          console.error('Произошла ошибка при загрузке новостей:', err);
++        });
++    }
++</script>
++</body>
++</html>
+Index: target/classes/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>spring.application.name=NewsAggregator\nspring.datasource.url=jdbc:postgresql://localhost:5432/news_aggregator\nspring.datasource.username=postgres\nspring.datasource.password=2002\nspring.datasource.driver-class-name=org.postgresql.Driver\nspring.jpa.hibernate.ddl-auto=update\nspring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect\n\n# NewsAPI\nnewsapi.url=https://newsapi.org/v2/top-headlines\nnewsapi.key=af2e953070524e3f81a973096f409c6c\n\n# Bing News Search\nbing.url=https://api.bing.microsoft.com/v7.0/news/search\nbing.key=???_API_????\n\n# Mail\nspring.mail.host=smtp.gmail.com\nspring.mail.port=587\nspring.mail.username=your-email@gmail.com\nspring.mail.password=your-email-password\nspring.mail.properties.mail.smtp.auth=true\nspring.mail.properties.mail.smtp.starttls.enable=true
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/target/classes/application.properties b/target/classes/application.properties
+--- a/target/classes/application.properties	
++++ b/target/classes/application.properties	
+@@ -5,19 +5,24 @@
+ spring.datasource.driver-class-name=org.postgresql.Driver
+ spring.jpa.hibernate.ddl-auto=update
+ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
++spring.jpa.show-sql=true
+ 
+ # NewsAPI
+-newsapi.url=https://newsapi.org/v2/top-headlines
+-newsapi.key=af2e953070524e3f81a973096f409c6c
++newsapi.url=https://newsapi.org/v2/
++newsapi.api-key=af2e953070524e3f81a973096f409c6c
++newsapi.cache-ttl=300000 # 5 ?????
+ 
+ # Bing News Search
+ bing.url=https://api.bing.microsoft.com/v7.0/news/search
+ bing.key=???_API_????
+ 
++# Infinispan
++infinispan.embedded.enabled=true
++infinispan.configuration=infinispan.xml
+ # Mail
+ spring.mail.host=smtp.gmail.com
+ spring.mail.port=587
+ spring.mail.username=your-email@gmail.com
+ spring.mail.password=your-email-password
+ spring.mail.properties.mail.smtp.auth=true
+-spring.mail.properties.mail.smtp.starttls.enable=true
+\ No newline at end of file
++spring.mail.properties.mail.smtp.starttls.enable=true

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Детальная информация о новости</title>
+  <style>
+    /* Стили, как в предыдущем примере */
+    body {
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .news-detail {
+      background: #fff;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .news-detail .news-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .news-detail .source {
+      font-weight: bold;
+      font-size: 16px;
+      color: #555;
+    }
+    .news-detail .date {
+      font-size: 14px;
+      color: #888;
+    }
+    .news-detail .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .news-detail .content {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      background-color: #007bff;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      transition: background-color 0.2s ease;
+    }
+    .back-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Детальная страница новости</h1>
+  <div class="news-detail" id="newsDetail">
+    <!-- Данные новости будут подставлены через JavaScript -->
+  </div>
+  <a href="news_page.html" class="back-btn">Вернуться к ленте</a>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const newsId = params.get('id');
+
+    if (!newsId) {
+      alert('Нет ID новости!');
+      window.location.href = 'index.html';
+      return;
+    }
+
+    fetch(`/api/news/${newsId}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Ошибка при получении новости: ' + response.status);
+        }
+        return response.json();
+      })
+      .then(news => {
+        // Обновляем заголовок документа (тег <title>) заголовком новости
+        document.title = news.title;
+
+        const newsDetailEl = document.getElementById('newsDetail');
+        const dateStr = news.publishedAt ? new Date(news.publishedAt).toLocaleString() : 'Без даты';
+        const source = news.source || 'Неизвестный источник';
+        const title = news.title || 'Без заголовка';
+        const content = news.content || 'Нет содержимого';
+
+        newsDetailEl.innerHTML = `
+          <div class="news-header">
+            <div class="source">${source}</div>
+            <div class="date">${dateStr}</div>
+          </div>
+          <div class="title">${title}</div>
+          <div class="content">${content}</div>
+        `;
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Не удалось загрузить детальную информацию о новости');
+      });
+  });
+</script>
+</body>
+</html>

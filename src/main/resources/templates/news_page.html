@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Лента</title>
+    <style>
+        /* ============ Общий Reset/Box-sizing ============ */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: sans-serif;
+        }
+
+        body {
+          background: #f3f3f3;
+          color: #333;
+          padding: 20px;
+        }
+
+        /* ============ Шапка и контейнеры ============ */
+        .header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        }
+
+        .header h1 {
+          font-size: 24px;
+        }
+
+        .topics-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-bottom: 20px;
+        }
+
+        .topic-btn {
+          background-color: #ddd;
+          border: none;
+          border-radius: 4px;
+          padding: 8px 14px;
+          font-size: 14px;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+        }
+
+        .topic-btn:hover {
+          background-color: #ccc;
+        }
+
+        .topic-btn.active {
+          background-color: #bbb;
+          font-weight: bold;
+        }
+
+        /* ============ Список новостей ============ */
+        .news-list {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          margin-bottom: 20px;
+        }
+
+        .news-card {
+          background: #fff;
+          border-radius: 6px;
+          padding: 15px;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+          cursor: pointer;
+          transition: box-shadow 0.2s ease;
+        }
+
+        .news-card:hover {
+          box-shadow: 0 2px 7px rgba(0,0,0,0.15);
+        }
+
+        .news-card .news-header {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 5px;
+        }
+
+        .news-card .news-header .source {
+          font-weight: bold;
+          color: #555;
+        }
+
+        .news-card .news-header .date {
+          font-size: 14px;
+          color: #888;
+        }
+
+        .news-card .title {
+          font-size: 16px;
+          font-weight: bold;
+          margin-bottom: 8px;
+        }
+
+        /* ============ Кнопка "Показать ещё" ============ */
+        .load-more {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          padding: 12px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 16px;
+          transition: background-color 0.2s ease;
+        }
+
+        .load-more:hover {
+          background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <h1>Новостная лента</h1>
+</header>
+
+<!-- Блок с кнопками топиков -->
+<div class="topics-container">
+    <!-- Кнопка "Все новости" -->
+    <button class="topic-btn active" data-topic="all">Все новости</button>
+    <!-- Пример топиков; можно дописать свои -->
+    <button class="topic-btn" data-topic="Sports">Sports</button>
+    <button class="topic-btn" data-topic="Politics">Politics</button>
+    <button class="topic-btn" data-topic="Technology">Technology</button>
+    <button class="topic-btn" data-topic="Health">Health</button>
+    <button class="topic-btn" data-topic="Business">Business</button>
+    <button class="topic-btn" data-topic="Entertainment">Entertainment</button>
+    <button class="topic-btn" data-topic="Science">Science</button>
+    <button class="topic-btn" data-topic="Environment">Environment</button>
+    <button class="topic-btn" data-topic="Education">Education</button>
+    <button class="topic-btn" data-topic="Travel">Travel</button>
+</div>
+
+<!-- Список новостей -->
+<div class="news-list" id="newsList">
+    <!-- Карточки новостей будут добавляться динамически через JS -->
+</div>
+
+<!-- Кнопка "Показать ещё" -->
+<button class="load-more" id="loadMoreBtn">Показать ещё</button>
+
+<!-- Скрипт -->
+<script>
+    // Текущее состояние:
+    let currentTopic = 'all'; // "all" означает "все новости"
+    let currentPage = 0;      // Стартовая страница
+    const pageSize = 15;      // Кол-во новостей на одной "странице"
+
+    // Ссылки на элементы
+    const topicsButtons = document.querySelectorAll('.topic-btn');
+    const newsList = document.getElementById('newsList');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+    // При загрузке страницы:
+    document.addEventListener('DOMContentLoaded', () => {
+      // Сразу загрузим новости (all)
+      loadNews('all', 0);
+
+      // Повесим обработчики на все кнопки топиков
+      topicsButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Удаляем класс active у всех
+          topicsButtons.forEach(b => b.classList.remove('active'));
+          // Добавляем active на кликнутую
+          btn.classList.add('active');
+
+          // Берём topic
+          const topic = btn.getAttribute('data-topic');
+          // Сбрасываем страницу на 0
+          currentPage = 0;
+          // Очищаем ленту
+          newsList.innerHTML = '';
+          // Загружаем новости
+          loadNews(topic, currentPage);
+
+          // Запомним текущий топик
+          currentTopic = topic;
+        });
+      });
+
+      // Клик на кнопку "Показать ещё"
+      loadMoreBtn.addEventListener('click', () => {
+        currentPage++;
+        loadNews(currentTopic, currentPage);
+      });
+    });
+
+    /**
+     * Загружаем список новостей для указанного топика и страницы.
+     * Если topic == 'all', берём /api/news/all-paged
+     * Иначе — /api/news/by-topic
+     */
+    function loadNews(topic, page) {
+      let url = '';
+      if (topic === 'all') {
+        url = `/api/news/all-paged?page=${page}&size=${pageSize}`;
+      } else {
+        url = `/api/news/by-topic?topic=${topic}&page=${page}&size=${pageSize}`;
+      }
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Ошибка при загрузке данных: ' + response.status);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // data — это массив NewsDto
+          // console.log('Загруженные новости:', data);
+
+          // Если data пустой, то на этой странице новостей больше нет
+          if (!data || data.length === 0) {
+            // Можно спрятать кнопку "Показать ещё"
+            loadMoreBtn.style.display = 'none';
+            return;
+          }
+
+          // Если мы успешно получили данные, показываем кнопку "Показать ещё"
+          loadMoreBtn.style.display = 'inline-block';
+
+          // Рендерим каждый элемент
+          data.forEach(news => {
+            // Создаём карточку
+            const card = document.createElement('div');
+            card.className = 'news-card';
+
+            // Вставляем разметку
+            // news.source, news.publishedAt, news.title
+            const dateStr = news.publishedAt ? new Date(news.publishedAt).toLocaleString() : 'Без даты';
+            const source = news.source ? news.source : 'Неизвестный источник';
+            const title = news.title ? news.title : 'Без заголовка';
+
+            card.innerHTML = `
+              <div class="news-header">
+                <div class="source">${source}</div>
+                <div class="date">${dateStr}</div>
+              </div>
+              <div class="title">${title}</div>
+            `;
+
+            // При клике на карточку — переходим на detail.html?id={news.id}
+            card.addEventListener('click', () => {
+              window.location.href = `detail.html?id=${news.id}`;
+            });
+
+            // Добавляем карточку в контейнер
+            newsList.appendChild(card);
+          });
+        })
+        .catch(err => {
+          console.error('Произошла ошибка при загрузке новостей:', err);
+        });
+    }
+</script>
+</body>
+</html>

@@ -7,7 +7,11 @@ import com.kpfu.itis.NewsAggregator.models.entities.Topic;
 import com.kpfu.itis.NewsAggregator.models.entities.NewsTopic;
 import com.kpfu.itis.NewsAggregator.models.entities.User;
 import com.kpfu.itis.NewsAggregator.repositories.NewsRepository;
+import com.kpfu.itis.NewsAggregator.repositories.NewsTopicRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,6 +24,7 @@ import java.util.stream.Collectors;
 public class NewsService {
 
     private final NewsRepository newsRepository;
+    private final NewsTopicRepository newsTopicRepository;
     private final TopicService topicService; // см. ниже
     private final UserService userService;   // см. ниже
 
@@ -28,46 +33,32 @@ public class NewsService {
      * Можно расширять и изменять по необходимости
      */
 
-    public List<NewsDto> get10LastNews() {
-        List<News> allNews = newsRepository.findAll().subList(0, 10);
-        System.out.println(allNews);
+    /**
+     * Получить новости по топику с поддержкой пагинации.
+     * @param topicName название топика (например, "Sports", "Politics")
+     * @param page номер страницы (начиная с 0)
+     * @param size количество новостей на странице (например, 15)
+     * @return список NewsDto для заданного топика
+     */
+    public List<NewsDto> getNewsByTopic(String topicName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        // Получаем новости через запрос в таблицу news_topics
+        Page<News> newsPage = newsTopicRepository.findNewsByTopicName(topicName, pageable);
+        return newsPage.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<NewsDto> getAll() {
+        List<News> allNews = newsRepository.findAll();
         return allNews.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
-    public List<NewsDto> getNewsByFilter(NewsFilterRequest filterRequest) {
-        // 1) Достаём все новости (неэффективно, если их много).
-        //    Лучше делать кастомный метод в репозитории, если критериев много.
-        List<News> allNews = newsRepository.findAll();
 
-        // 2) Фильтруем по источникам (если указаны)
-        if (filterRequest.getSources() != null && !filterRequest.getSources().isEmpty()) {
-            allNews = allNews.stream()
-                    .filter(news -> filterRequest.getSources().contains(news.getSource()))
-                    .collect(Collectors.toList());
-        }
-
-        // 3) Фильтр по датам
-        if (filterRequest.getStartDate() != null) {
-            LocalDateTime startDateTime = filterRequest.getStartDate().atStartOfDay();
-            allNews = allNews.stream()
-                    .filter(news -> news.getPublishedAt() != null && news.getPublishedAt().isAfter(startDateTime))
-                    .collect(Collectors.toList());
-        }
-        if (filterRequest.getEndDate() != null) {
-            // берем конец дня, если нужно включить всю дату
-            LocalDateTime endDateTime = filterRequest.getEndDate().atTime(LocalTime.MAX);
-            allNews = allNews.stream()
-                    .filter(news -> news.getPublishedAt() != null && news.getPublishedAt().isBefore(endDateTime))
-                    .collect(Collectors.toList());
-        }
-
-        // 4) Тут можно добавить фильтр по региону, если он у вас где-то хранится.
-
-        // 5) Преобразуем в DTO
-        return allNews.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+    public News getById(Long id) {
+        News news = newsRepository.findById(id).get();
+        return news;
     }
 
     /**
@@ -76,7 +67,7 @@ public class NewsService {
      */
     public List<NewsDto> getPersonalizedNews(Long userId) {
         // находим пользователя
-        User user = userService.getUserById(userId);
+        User user = userService.getUserById(userId).get();
 
         // получаем список тем, на которые подписан пользователь
         List<Topic> userTopics = user.getUserTopics().stream()
@@ -113,7 +104,7 @@ public class NewsService {
     /**
      * Вспомогательный метод конвертации сущности в DTO
      */
-    private NewsDto convertToDto(News news) {
+    public NewsDto convertToDto(News news) {
         NewsDto dto = new NewsDto();
         dto.setId(news.getId());
         dto.setUrl(news.getUrl());

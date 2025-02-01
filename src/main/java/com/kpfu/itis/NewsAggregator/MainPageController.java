@@ -1,13 +1,11 @@
 package com.kpfu.itis.NewsAggregator;
 
 
-import com.kpfu.itis.NewsAggregator.auth.UserService;
 import com.kpfu.itis.NewsAggregator.forms.AuthForm;
-import com.kpfu.itis.NewsAggregator.models.entities.User;
+import com.kpfu.itis.NewsAggregator.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @RestController
 public class MainPageController {

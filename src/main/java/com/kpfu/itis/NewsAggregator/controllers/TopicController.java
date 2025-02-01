@@ -32,7 +32,7 @@ public class TopicController {
      */
     @PostMapping("/user/{userId}/add")
     public String addTopicToUser(@PathVariable Long userId, @RequestBody TopicRequest request) {
-        User user = userService.getUserById(userId);
+        User user = userService.getUserById(userId).get();
         // получаем или создаем тему
         Topic topic = topicService.getByName(request.getTopicName()).get();
         // связываем
@@ -46,7 +46,7 @@ public class TopicController {
      */
     @DeleteMapping("/user/{userId}/remove")
     public String removeTopicFromUser(@PathVariable Long userId, @RequestBody TopicRequest request) {
-        User user = userService.getUserById(userId);
+        User user = userService.getUserById(userId).get();
         // Получаем тему по имени (если нет, ничего не делаем)
         Topic topic = topicService.getByName(request.getTopicName()).get();
         topicService.removeTopicFromUser(topic, user);
