@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<h1>Регистрация</h1>
+<!-- Форма отправляет данные методом POST на /auth/register -->
+<form th:action="@{/auth/register}" method="post">
+    <div>
+        <label for="email">Email:</label>
+        <!-- Поле email -->
+        <input type="email" id="email" name="email" placeholder="Введите email" required />
+    </div>
+    <div>
+        <label for="password">Пароль:</label>
+        <!-- Поле для ввода пароля -->
+        <input type="password" id="password" name="password" placeholder="Введите пароль" required />
+    </div>
+    <!-- Если нужно, можно добавить поле для подтверждения пароля
+    <div>
+        <label for="confirmPassword">Подтвердите пароль:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Повторите пароль" required />
+    </div>
+    -->
+    <div>
+        <button type="submit">Зарегистрироваться</button>
+    </div>
+</form>
+
+<!-- Если регистрация завершилась с ошибкой или успешно,
+     можно передать сообщения через параметры запроса (например, ?error=... или ?success=...)
+     и отобразить их здесь -->
+<div th:if="${param.error}">
+    <p style="color: red;">Ошибка регистрации: <span th:text="${param.error}"></span></p>
+</div>
+<div th:if="${param.success}">
+    <p style="color: green;">Регистрация прошла успешно!</p>
+</div>
+
+<p>Уже зарегистрированы? <a th:href="@{/auth/login}">Войти</a></p>
+</body>
+</html>
