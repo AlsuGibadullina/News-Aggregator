@@ -1,17 +1,13 @@
 package com.kpfu.itis.NewsAggregator;
 
-import com.kpfu.itis.NewsAggregator.auth.UserService;
-import com.kpfu.itis.NewsAggregator.models.entities.User;
-import jakarta.servlet.http.HttpSession;
+import com.kpfu.itis.NewsAggregator.auth.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -22,7 +18,7 @@ class AuthController {
     private SpringTemplateEngine templateEngine;
 
     @Autowired
-    private UserService userService;
+    private AuthService authService;
 
     public AuthController(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -31,7 +27,7 @@ class AuthController {
     @PostMapping("/register")
     public String register(@RequestParam String email, @RequestParam String password) {
         System.out.println("/register");
-        userService.registerUser(email, password);
+        authService.registerUser(email, password);
 
         if (users.containsKey(email)) {
             return "User already exists";
