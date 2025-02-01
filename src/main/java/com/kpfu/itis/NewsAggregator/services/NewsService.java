@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -61,6 +62,7 @@ public class NewsService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable("popularRequests")
     public List<NewsDto> getAll() {
         List<News> allNews = newsRepository.findAll();
         return allNews.stream()
