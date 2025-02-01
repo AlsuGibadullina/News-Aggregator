@@ -27,8 +27,7 @@ public class NewsService {
 
     private final NewsRepository newsRepository;
     private final NewsTopicRepository newsTopicRepository;
-    private final TopicService topicService; // см. ниже
-    private final UserService userService;   // см. ниже
+    private final UserService userService;
 
     /**
      * Получить все новости с учётом базовых критериев (источник, даты и т.д.)
@@ -127,12 +126,6 @@ public class NewsService {
         dto.setSource(news.getSource());
         dto.setPublishedAt(news.getPublishedAt());
         dto.setCommentsCount(news.getCommentsCount());
-
-        // добавляем список названий тем
-//        List<String> topicNames = news.getNewsTopics().stream()
-//                .map(nt -> nt.getTopic().getName())
-//                .collect(Collectors.toList());
-//        dto.setTopics(topicNames);
 
         return dto;
     }

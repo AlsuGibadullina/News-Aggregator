@@ -6,6 +6,8 @@ import com.kpfu.itis.NewsAggregator.models.dtos.NewsFilterRequest;
 import com.kpfu.itis.NewsAggregator.models.entities.News;
 import com.kpfu.itis.NewsAggregator.services.NewsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,8 +15,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping("/api/news")
+@Controller
+@RequestMapping("/news")
 @RequiredArgsConstructor
 public class NewsController {
 
@@ -25,15 +27,28 @@ public class NewsController {
 //        return newsService.getNewsByFilter(request);
 //    }
 
-    @GetMapping("/personalized")
-    public List<NewsDto> getPersonalizedNews(@RequestParam Long userId) {
-        return newsService.getPersonalizedNews(userId);
+    @GetMapping("/")
+    public String newsPage() {
+        return "news_page";
     }
 
-    @GetMapping("/all")
-    public List<NewsDto> getAll() {
-        return newsService.getAll();
+    @GetMapping("/detail/{id}")
+    public String newsDetailPage(@PathVariable("id") Long id, Model model) {
+        NewsDto news = newsService.convertToDto(newsService.getById(id));
+        model.addAttribute("news", news);
+        return "news_detail"; // Ищется шаблон news_detail.html в папке templates
     }
+
+
+//    @GetMapping("/personalized")
+//    public List<NewsDto> getPersonalizedNews(@RequestParam Long userId) {
+//        return newsService.getPersonalizedNews(userId);
+//    }
+//
+//    @GetMapping("/all")
+//    public List<NewsDto> getAll() {
+//        return newsService.getAll();
+//    }
 
     /**
      * Эндпоинт для получения новостей по топику с пагинацией.

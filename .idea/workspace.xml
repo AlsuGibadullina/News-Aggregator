@@ -6,13 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="1ebcf558-65cf-4cfb-b65e-5a136a70948d" name="Changes" comment="WebClient fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/MainPageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/MainPageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/NewsAggregationScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/NewsAggregationScheduler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/news_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/news_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/news_page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/detail.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/news_page.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/controllers/NewsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/controllers/NewsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/NewsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/NewsService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -22,24 +22,13 @@ import java.util.ArrayList;
 @Controller
 @RequiredArgsConstructor
 public class MainPageController {
-    private final NewsService newsService;
-
-    @GetMapping("/news")
-    public String newsPage() {
-        return "news_page";
-    }
-
-    @GetMapping("/news/detail/{id}")
-    public String newsDetailPage(@PathVariable("id") Long id, Model model) {
-        // Получаем объект новости по id из сервиса
-        NewsDto news = newsService.convertToDto(newsService.getById(id));
-        model.addAttribute("news", news);
-        return "news_detail"; // Ищется шаблон news_detail.html в папке templates
-    }
-
-
     @Autowired
     private UserService userService;
+
+    private final NewsService newsService;
+
+
+
 
 //    @Autowired
 //    private AuthenticationManager authenticationManager;
