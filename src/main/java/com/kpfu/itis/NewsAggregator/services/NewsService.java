@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -44,6 +45,17 @@ public class NewsService {
         Pageable pageable = PageRequest.of(page, size);
         // Получаем новости через запрос в таблицу news_topics
         Page<News> newsPage = newsTopicRepository.findNewsByTopicName(topicName, pageable);
+        return newsPage.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<NewsDto> getAllPaged(int page, int size) {
+        // Создаем объект Pageable с сортировкой по publishedAt в порядке убывания
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "publishedAt"));
+        // Выполняем запрос к БД с использованием пагинации
+        Page<News> newsPage = newsRepository.findAll(pageable);
+        // Преобразуем сущности в DTO и возвращаем
         return newsPage.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());

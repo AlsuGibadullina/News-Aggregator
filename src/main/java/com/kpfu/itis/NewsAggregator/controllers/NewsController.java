@@ -8,7 +8,11 @@ import com.kpfu.itis.NewsAggregator.services.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/news")
 @RequiredArgsConstructor
@@ -41,6 +45,14 @@ public class NewsController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "15") int size) {
         return newsService.getNewsByTopic(topicName, page, size);
+    }
+
+    @GetMapping("/all-paged")
+    public List<NewsDto> getAllPaged(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "15") int size
+    ) {
+        return newsService.getAllPaged(page, size);
     }
 
     @GetMapping("/{id}")
