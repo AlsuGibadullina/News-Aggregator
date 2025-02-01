@@ -28,9 +28,8 @@ public class UserService {
 
         user.setEmail(email);
         user.setPasswordHash(passwordEncoder.encode(password));
-//        user.setConfirmationCode(UUID.randomUUID().toString());
+        user.setConfirmationCode(UUID.randomUUID().toString());
         userRepository.saveAndFlush(user);
-
 //        sendConfirmationEmail(user.getEmail(), user.getConfirmationCode());
     }
 
