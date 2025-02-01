@@ -2,6 +2,8 @@ package com.kpfu.itis.NewsAggregator;
 
 
 import com.kpfu.itis.NewsAggregator.forms.AuthForm;
+import com.kpfu.itis.NewsAggregator.models.dtos.NewsDto;
+import com.kpfu.itis.NewsAggregator.services.NewsService;
 import com.kpfu.itis.NewsAggregator.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,16 +22,21 @@ import java.util.ArrayList;
 @Controller
 @RequiredArgsConstructor
 public class MainPageController {
-
-    @GetMapping("/")
-    public String index() {
-        return "Greetings from Spring Boot!";
-    }
+    private final NewsService newsService;
 
     @GetMapping("/news")
     public String newsPage() {
-        return "src/main/resources/templates/news_page.html";
+        return "news_page";
     }
+
+    @GetMapping("/news/detail/{id}")
+    public String newsDetailPage(@PathVariable("id") Long id, Model model) {
+        // Получаем объект новости по id из сервиса
+        NewsDto news = newsService.convertToDto(newsService.getById(id));
+        model.addAttribute("news", news);
+        return "news_detail"; // Ищется шаблон news_detail.html в папке templates
+    }
+
 
     @Autowired
     private UserService userService;

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Заголовок страницы динамически подставляется из объекта новости -->
+  <title th:text="${news.title}">Детальная информация о новости</title>
+  <style>
+    body {
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .news-detail {
+      background: #fff;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .news-detail .news-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .news-detail .source {
+      font-weight: bold;
+      font-size: 16px;
+      color: #555;
+    }
+    .news-detail .date {
+      font-size: 14px;
+      color: #888;
+    }
+    .news-detail .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .news-detail .content {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      background-color: #007bff;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      transition: background-color 0.2s ease;
+    }
+    .back-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Детальная страница новости</h1>
+  <div class="news-detail">
+    <div class="news-header">
+      <div class="source" th:text="${news.source}">Источник</div>
+      <div class="date" th:text="${news.publishedAt}">Дата</div>
+    </div>
+    <div class="title" th:text="${news.title}">Заголовок</div>
+    <div class="content" th:text="${news.content}">Содержимое новости</div>
+  </div>
+  <!-- Ссылка для возврата к ленте -->
+  <a class="back-btn" th:href="@{/news}">Вернуться к ленте</a>
+</div>
+</body>
+</html>
