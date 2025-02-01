@@ -5,15 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ebcf558-65cf-4cfb-b65e-5a136a70948d" name="Changes" comment="WebClient fix">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/repositories/NewsTopicRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/detail.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/news_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/MainPageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/MainPageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/auth/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/auth/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/auth/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/controllers/NewsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/controllers/NewsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/NewsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/NewsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/models/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/models/entities/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/news_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/news_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/news_page.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +36,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="dev" />
+        <entry key="$PROJECT_DIR$" value="feature/auth" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -70,6 +74,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/static" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
@@ -114,9 +119,9 @@
       <list>
         <item itemvalue="Application.NewsAggregatorApplication" />
         <item itemvalue="JAR Application.lombok-1.18.36.jar" />
+        <item itemvalue="Application.NewsAggregatorApplication" />
         <item itemvalue="JAR Application.lombok-1.18.36.jar" />
-        <item itemvalue="Application.NewsAggregatorApplication" />
-        <item itemvalue="Application.NewsAggregatorApplication" />
+        <item itemvalue="JAR Application.lombok-1.18.36.jar" />
       </list>
     </recent_temporary>
   </component>
