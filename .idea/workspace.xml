@@ -5,23 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ebcf558-65cf-4cfb-b65e-5a136a70948d" name="Changes" comment="WebClient fix">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/auth/AuthService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/auth/CustomUserDetailsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/controllers/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/controllers/AuthViewController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/controllers/NewsApiController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/registration.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/NewsDataClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/models/dtos/NewsDataArticle.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/models/dtos/NewsDataResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/NewsAggregatorApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/NewsAggregatorApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/auth/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/auth/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/NewsAggregationScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/NewsAggregationScheduler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/NewsAggregationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/NewsAggregationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/models/dtos/ExternalNewsDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/models/dtos/ExternalNewsDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/TopicService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/TopicService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/register.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/register.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -278,21 +270,6 @@
     <MESSAGE value="WebClient" />
     <MESSAGE value="WebClient fix" />
     <option name="LAST_COMMIT_MESSAGE" value="WebClient fix" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/com/kpfu/itis/NewsAggregator/services/NewsService.java</url>
-          <line>52</line>
-          <properties class="com.kpfu.itis.NewsAggregator.services.NewsService" method="getAllPaged">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

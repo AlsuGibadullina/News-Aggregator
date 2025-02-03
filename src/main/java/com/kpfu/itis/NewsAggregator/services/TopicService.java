@@ -28,31 +28,81 @@ public class TopicService {
 
     @PostConstruct
     public void init() {
-        // Инициализируем темы и их ключевые слова
-        // В реальном приложении можно загружать эти данные из базы данных или конфигурационных файлов
+        // Инициализируем темы и их ключевые слова.
+        // В реальном приложении можно загружать эти данные из БД или конфигурационных файлов.
         topicKeywords.put("Sports", new HashSet<>(Arrays.asList(
-                "football", "soccer", "basketball", "tennis", "cricket", "baseball", "fifa", "nba", "olympics", "athlete", "match", "tournament"
+                "ESPN", "football", "soccer", "basketball", "tennis", "cricket", "baseball", "fifa", "nba", "olympics", "athlete", "match", "tournament",
+                "футбол", "баскетбол", "теннис", "спорт", "соревнования", "чемпионат", "олимпиада"
         )));
 
         topicKeywords.put("Politics", new HashSet<>(Arrays.asList(
-                "election", "government", "minister", "policy", "senate", "congress", "president", "law", "democracy", "vote", "parliament", "political"
+                "democrats", "election", "government", "minister", "policy", "senate", "congress", "president", "law", "democracy", "vote", "parliament", "political",
+                "Украина", "Зеленский", "Путин", "президент", "парламент", "выборы", "фракция", "оппозиция", "политика", "власть"
         )));
 
         topicKeywords.put("Technology", new HashSet<>(Arrays.asList(
-                "technology", "tech", "software", "hardware", "AI", "artificial intelligence", "machine learning", "blockchain", "robotics", "gadgets", "internet", "innovation"
+                // Английская версия
+                "technology", "tech", "software", "hardware", "AI", "artificial intelligence", "machine learning", "blockchain", "robotics", "gadgets", "internet", "innovation",
+                // Русская версия
+                "технологии", "программное обеспечение", "аппаратное обеспечение", "искусственный интеллект", "машинное обучение", "блокчейн", "робототехника", "гаджеты", "инновация"
         )));
 
         topicKeywords.put("Health", new HashSet<>(Arrays.asList(
-                "health", "medicine", "medical", "virus", "covid", "pandemic", "doctor", "hospital", "disease", "vaccine", "wellness", "nutrition"
+                // Английская версия
+                "health", "medicine", "medical", "virus", "covid", "pandemic", "doctor", "hospital", "disease", "vaccine", "wellness", "nutrition",
+                // Русская версия
+                "здоровье", "медицина", "врач", "больница", "болезнь", "вакцина", "пандемия", "лечебное питание", "фитнес"
         )));
 
         topicKeywords.put("Business", new HashSet<>(Arrays.asList(
-                "business", "economy", "market", "stocks", "finance", "investment", "startup", "entrepreneur", "trade", "industry", "company", "CEO"
+                // Английская версия
+                "vp", "earnings", "business", "economy", "market", "stocks", "finance", "investment", "startup", "entrepreneur", "trade", "industry", "company", "CEO",
+                // Русская версия
+                "бизнес", "экономика", "рынок", "акции", "финансы", "инвестиции", "стартап", "предприниматель", "торговля", "индустрия", "компания", "генеральный директор"
         )));
 
-        // Добавьте другие темы по необходимости
+        // Добавляем ещё 5 тем
 
-        // Сохраняем темы в базе данных (если они ещё не существуют)
+        // 1. Entertainment (Развлечения)
+        topicKeywords.put("Entertainment", new HashSet<>(Arrays.asList(
+                // Английская версия
+                "movie", "music", "celebrity", "hollywood", "award", "box office", "streaming", "series", "tv", "concert", "festival", "pop culture",
+                // Русская версия
+                "кино", "музыка", "звезда", "голливуд", "премия", "кассовый сбор", "стриминг", "сериал", "телевидение", "концерт", "фестиваль", "поп-культура"
+        )));
+
+        // 2. Science (Наука)
+        topicKeywords.put("Science", new HashSet<>(Arrays.asList(
+                // Английская версия
+                "science", "research", "space", "nasa", "discovery", "physics", "biology", "chemistry", "experiment", "quantum", "innovation", "laboratory",
+                // Русская версия
+                "наука", "исследование", "космос", "наса", "открытие", "физика", "биология", "химия", "эксперимент", "квант", "инновация", "лаборатория"
+        )));
+
+        // 3. Education (Образование)
+        topicKeywords.put("Education", new HashSet<>(Arrays.asList(
+                // Английская версия
+                "education", "school", "university", "college", "student", "teacher", "curriculum", "scholarship", "learning", "exam", "online education",
+                // Русская версия
+                "образование", "школа", "университет", "колледж", "студент", "преподаватель", "учебная программа", "стипендия", "обучение", "экзамен", "онлайн образование"
+        )));
+
+        // 4. Travel (Путешествия)
+        topicKeywords.put("Travel", new HashSet<>(Arrays.asList(
+                // Английская версия
+                "travel", "tourism", "vacation", "flight", "hotel", "destination", "adventure", "itinerary", "guide", "cruise", "trip", "backpacking", "sightseeing",
+                // Русская версия
+                "путешествия", "туризм", "отпуск", "рейс", "отель", "направление", "приключение", "маршрут", "гид", "круиз", "поездка", "путешествие с рюкзаком", "достопримечательности"
+        )));
+
+        // 5. Culture (Культура)
+        topicKeywords.put("Culture", new HashSet<>(Arrays.asList(
+                // Английская версия
+                "culture", "art", "literature", "museum", "exhibition", "festival", "history", "heritage", "design", "creativity", "tradition", "performance",
+                // Русская версия
+                "культура", "искусство", "литература", "музей", "выставка", "фестиваль", "история", "наследие", "дизайн", "творчество", "традиция", "выступление"
+        )));
+
         for (String topicName : topicKeywords.keySet()) {
             topicRepository.findByName(topicName).orElseGet(() -> {
                 Topic topic = new Topic();

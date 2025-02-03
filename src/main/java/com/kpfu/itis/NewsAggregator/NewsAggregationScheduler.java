@@ -14,7 +14,7 @@ public class NewsAggregationScheduler {
      * Запускает агрегацию новостей каждые 15 минут.
      * Cron-выражение: "0 0/15 * * * ?" означает каждую 15-ю минуту каждого часа.
      */
-    //@Scheduled(cron = "0 0/15 * * * ?")
+    @Scheduled(cron = "0 * * * * *")
     public void scheduledAggregation() {
         aggregationService.aggregateAllNews();
     }

@@ -3,8 +3,10 @@ package com.kpfu.itis.NewsAggregator;
 import com.kpfu.itis.NewsAggregator.models.dtos.ExternalNewsDto;
 import com.kpfu.itis.NewsAggregator.models.entities.News;
 import com.kpfu.itis.NewsAggregator.models.entities.NewsTopic;
+import com.kpfu.itis.NewsAggregator.models.entities.NewsTopicId;
 import com.kpfu.itis.NewsAggregator.models.entities.Topic;
 import com.kpfu.itis.NewsAggregator.repositories.NewsRepository;
+import com.kpfu.itis.NewsAggregator.repositories.NewsTopicRepository;
 import com.kpfu.itis.NewsAggregator.services.TopicService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +28,10 @@ public class NewsAggregationService {
 
 
     private final NewsRepository newsRepository;
+    private final NewsTopicRepository newsTopicRepository;
     private final TopicService topicService;
     private final NewsApiClient newsApiClient;
-    //private final BingClient bingClient;
+    private final NewsDataClient newsDataClient;
     //private final YandexClient yandexClient;
     private final StanfordCoreNLP stanfordCoreNLP;
 
@@ -43,16 +46,14 @@ public class NewsAggregationService {
 
         // Получаем новости из разных источников
         combinedNews.addAll(newsApiClient.getTopHeadlines("us"));
-        //combinedNews.addAll(bingClient.getTopHeadlines("us"));
-        // Добавьте другие клиенты, если они есть
-        // combinedNews.addAll(yandexClient.getTopHeadlines("us"));
+        combinedNews.addAll(newsDataClient.getTopHeadlines("ru", "ru"));
+
 
         // Удаляем дубликаты
         List<ExternalNewsDto> uniqueNews = removeDuplicates(combinedNews);
 
         // Обрабатываем каждую новость
         for (ExternalNewsDto dto : uniqueNews) {
-
             saveNewsWithTopics(dto);
         }
     }
@@ -95,9 +96,17 @@ public class NewsAggregationService {
         // Привязываем новые темы
         for (Topic topic : topics) {
             NewsTopic newsTopic = new NewsTopic();
+
+            // Инициализируем NewsTopicId на основе уже сохранённого news.getId() и topic.getId()
+            NewsTopicId newsTopicId = new NewsTopicId(news.getId(), topic.getId());
+            newsTopic.setId(newsTopicId);
+
+            // Устанавливаем связи
             newsTopic.setNews(news);
             newsTopic.setTopic(topic);
-//            news.getNewsTopics().add(newsTopic);
+
+            // Сохраняем NewsTopic
+            newsTopicRepository.save(newsTopic);
         }
 
         // Сохраняем новость снова, чтобы сохранить связи с темами
