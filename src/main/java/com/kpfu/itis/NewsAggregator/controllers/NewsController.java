@@ -27,7 +27,7 @@ public class NewsController {
 //        return newsService.getNewsByFilter(request);
 //    }
 
-    @GetMapping("/")
+    @GetMapping("")
     public String newsPage() {
         return "news_page";
     }
@@ -50,25 +50,6 @@ public class NewsController {
 //        return newsService.getAll();
 //    }
 
-    /**
-     * Эндпоинт для получения новостей по топику с пагинацией.
-     * Пример запроса: GET /api/news/by-topic?topic=Sports&page=0&size=15
-     */
-    @GetMapping("/by-topic")
-    public List<NewsDto> getNewsByTopic(
-            @RequestParam("topic") String topicName,
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "15") int size) {
-        return newsService.getNewsByTopic(topicName, page, size);
-    }
-
-    @GetMapping("/all-paged")
-    public List<NewsDto> getAllPaged(
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "15") int size
-    ) {
-        return newsService.getAllPaged(page, size);
-    }
 
     @GetMapping("/{id}")
     public NewsDto getNewsById(@PathVariable("id") Long id) {
